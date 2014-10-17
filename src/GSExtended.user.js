@@ -5,9 +5,9 @@
 // @homepage    https://ramouch0.github.io/GSExtended/
 // @description Enhance Grooveshark Broadcast functionality
 // @downloadURL https://ramouch0.github.io/GSExtended/src/GSExtended.user.js
-// @updateURL   https://bit.ly/GSXUpdate
+// @updateURL   https://raw.githubusercontent.com/pironic/GSExtended/WritheM-Bot/src/GSExtended.user.js
 // @include     http://grooveshark.com/*
-// @version     2.4.2
+// @version     2.4.2.1
 // @run-at document-end
 // @grant  none 
 // ==/UserScript==
@@ -29,7 +29,8 @@ dependencies = {
 GSBot = {
     commands : ['/removeNext', '/removeLast', '/fetchByName', '/removeByName', '/skip', '/fetchLast', '/previewRemoveByName',
                 '/showPlaylist', '/playPlaylist', '/shuffle', '/addToCollection', '/removeFromCollection', '/help', '/ping',
-                '/peek', '/guest', '/makeGuest', '/unguestAll', '/about', '[BOT]' ]
+                '/peek', '/guest', '/makeGuest', '/unguestAll', '/about', '[BOT]', '/eventSilence', '/wa', '/roll', 
+                '/setShoutout', '/clearQueue', '/playRandom', '/about', '/records', '/startContest', '/endContest', '/ballot' ]
 };
 GSX = {
     settings: {
