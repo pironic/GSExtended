@@ -2,12 +2,12 @@
 // @Author      Ram
 // @name        Grooveshark Extended
 // @namespace   GSX
-// @homepage    https://ramouch0.github.io/GSExtended/
+// @homepage    https://pironic.github.io/GSExtended/
 // @description Enhance Grooveshark Broadcast functionality
-// @downloadURL https://ramouch0.github.io/GSExtended/src/GSExtended.user.js
+// @downloadURL https://raw.githubusercontent.com/pironic/GSExtended/WritheM-Bot/src/GSExtended.user.js
 // @updateURL   https://raw.githubusercontent.com/pironic/GSExtended/WritheM-Bot/src/GSExtended.user.js
 // @include     http://grooveshark.com/*
-// @version     2.4.2.2
+// @version     2.4.2.3
 // @run-at document-end
 // @grant  none 
 // ==/UserScript==
