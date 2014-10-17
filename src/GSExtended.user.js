@@ -7,7 +7,7 @@
 // @downloadURL https://ramouch0.github.io/GSExtended/src/GSExtended.user.js
 // @updateURL   https://raw.githubusercontent.com/pironic/GSExtended/WritheM-Bot/src/GSExtended.user.js
 // @include     http://grooveshark.com/*
-// @version     2.4.2.1
+// @version     2.4.2.2
 // @run-at document-end
 // @grant  none 
 // ==/UserScript==
@@ -30,7 +30,7 @@ GSBot = {
     commands : ['/removeNext', '/removeLast', '/fetchByName', '/removeByName', '/skip', '/fetchLast', '/previewRemoveByName',
                 '/showPlaylist', '/playPlaylist', '/shuffle', '/addToCollection', '/removeFromCollection', '/help', '/ping',
                 '/peek', '/guest', '/makeGuest', '/unguestAll', '/about', '[BOT]', '/eventSilence', '/wa', '/roll', 
-                '/setShoutout', '/clearQueue', '/playRandom', '/about', '/records', '/startContest', '/endContest', '/ballot' ]
+                '/setShoutout', '/clearQueue', '/playRandom', '/records', '/startContest', '/endContest', '/ballot' ]
 };
 GSX = {
     settings: {
