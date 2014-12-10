@@ -4,10 +4,10 @@
 // @namespace   GSX
 // @homepage    https://ramouch0.github.io/GSExtended/
 // @description Enhance Grooveshark Broadcast functionality
-// @downloadURL https://ramouch0.github.io/GSExtended/src/GSExtended.user.js
-// @updateURL   https://bit.ly/GSXUpdate
+// @downloadURL https://raw.githubusercontent.com/pironic/GSExtended/master/src/GSExtended.user.js
+// @updateURL   https://raw.githubusercontent.com/pironic/GSExtended/master/src/GSExtended.user.js
 // @include     http://grooveshark.com/*
-// @version     2.4.2
+// @version     2.4.2.1
 // @run-at document-end
 // @grant  none 
 // ==/UserScript==
@@ -322,7 +322,7 @@ GSX = {
         return hot;
     },
     isSpoiler: function (text){
-        return text.toLowerCase().indexOf('[sp') !== -1;
+        return text.toLowerCase().indexOf('[sp') !== -1 || text.toLowerCase().indexOf(' ') !== -1;
     },  
     isBotCommand: function (text){
         for (var i = 0; i < GSX.settings.botCommands.length; i++){
@@ -689,8 +689,8 @@ GSX = {
                 var el = $(e.currentTarget);
                 var txt = el.text();
                 //rot13 the message to hide spoilers
-                var msg = txt.replace(/\[(sp.*)\](.+)/ig, function (m, tag, spoil, off, str) {
-                    return '[' + tag + ']' + GSXUtil.rot13(spoil);
+                var msg = txt.replace(/(\[sp.*\]| )(.+)/ig, function (m, tag, spoil, off, str) {
+                    return tag + GSXUtil.rot13(spoil);
                 });
                 el.text(msg).removeClass('spoiler-msg');
                 GSXUtil.magnify(el, GSX.settings.inlineChatImages);
@@ -736,8 +736,8 @@ GSX = {
                 }
                 if (GSX.isSpoiler(msg)) {
                     //rot13 the message to hide spoilers
-                    msg = msg.replace(/\[(sp.*)\](.+)/ig, function (m, tag, spoil, off, str) {
-                        return '[' + tag + '] ' + GSXUtil.rot13(spoil);
+                    msg = msg.replace(/(\[sp.*\]| )(.+)/ig, function (m, tag, spoil, off, str) {
+                        return tag + GSXUtil.rot13(spoil);
                     });
                 }
                 send.call(this, msg);
