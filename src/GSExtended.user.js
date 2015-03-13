@@ -4,8 +4,8 @@
 // @namespace   GSXnew
 // @homepage    https://ramouch0.github.io/GSExtended/
 // @description Enhance Grooveshark Broadcast functionality
-// @downloadURL https://raw.githubusercontent.com/pironic/GSExtended/master/src/GSExtended.user.js
-// @updateURL   https://raw.githubusercontent.com/pironic/GSExtended/master/src/GSExtended.user.js
+// @downloadURL https://cdn.rawgit.com/pironic/GSExtended/master/src/GSExtended.user.js
+// @updateURL   https://cdn.rawgit.com/pironic/GSExtended/master/src/GSExtended.user.js
 // @include     http://grooveshark.com/*
 // @requir		lib/jquery.util.js
 // @requir		lib/linkified.js
@@ -15,8 +15,8 @@
 // ==/UserScript==
 dependencies = {
     js: [
-	  'https://raw.githubusercontent.com/Ramouch0/GSExtended/master/src/lib/jquery.util.js',
-	  'https://raw.githubusercontent.com/Ramouch0/GSExtended/master/src/lib/linkified.js'
+	  'https://cdn.rawgit.com/Ramouch0/GSExtended/master/src/lib/jquery.util.js',
+	  'https://cdn.rawgit.com/Ramouch0/GSExtended/master/src/lib/linkified.js'
 	],
     css: [
         'https://ramouch0.github.io/GSExtended/src/css/gsx_core.css'
