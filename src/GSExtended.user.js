@@ -4,7 +4,8 @@
 // @namespace   GSX
 // @homepage    https://ramouch0.github.io/GSExtended/
 // @description Enhance Grooveshark Broadcast functionality
-
+// @downloadURL https://ramouch0.github.io/GSExtended/src/GSExtended.user.js
+// @updateURL   https://bit.ly/GSXUpdate
 // @downloadURL https://cdn.rawgit.com/pironic/GSExtended/master/src/GSExtended.user.js
 // @updateURL   https://cdn.rawgit.com/pironic/GSExtended/master/src/GSExtended.user.js
 // @include     http://grooveshark.com/*
@@ -17,7 +18,8 @@
 // @require		modules/Broadcast.js
 // @require		modules/GlobalLinkify.js
 // @require		modules/SocialBar.js
-// @version     3.2.1.1
+// @require		modules/Sidebar.js
+// @version     3.2.1.2
 // @run-at document-end
 // @grant  none 
 // ==/UserScript==
