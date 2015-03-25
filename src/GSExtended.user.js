@@ -12,10 +12,12 @@
 // @require		lib/GSXUtil.js
 // @require		modules/Autocomplete.js
 // @require		modules/ChatBox.js
+// @require		modules/ExternalChatBox.js
 // @require		modules/SongRender.js
 // @require		modules/Broadcast.js
+// @require		modules/GlobalLinkify.js
 // @require		modules/SocialBar.js
-// @version     3.1.0.1
+// @version     3.2.1.1
 // @run-at document-end
 // @grant  none 
 // ==/UserScript==
@@ -50,6 +52,7 @@ var GSX = (function () {
       chatNotify: true,
       chatNotificationTriggers: {},
       songNotification: true,
+      socialBar: true,
       chatForceAlbumDisplay: false,
       disableChatMerge: false,
       forceVoterLoading: false,
@@ -69,7 +72,7 @@ var GSX = (function () {
       botCommands: GSBot.commands
 
     },
-    
+
     init: function () {
       GSX.showRealVotes = false;
       GSX.chrome = (/chrom(e|ium)/.test(navigator.userAgent.toLowerCase()));
@@ -128,16 +131,7 @@ var GSX = (function () {
 
       console.debug('IIIIIIIIIIIIIIIIIIIII', GSXmodules);
       GSX.modulesHook('init');
-      
-      /*console.log('hook chat renderer');
-      this.hookChatRenderer();
-      console.log('add song vote renderer');
-      this.hookSongRenderer();
 
-      GS.on('manatee:identified', function () {
-        GSX.initializeSocialBar();
-      });
-*/
       if (this.settings.friendOfToothless) {
         console.info('MEEEP !');
         this.forbiddenFriendship();
@@ -163,6 +157,24 @@ var GSX = (function () {
         }
       });
     },
+
+    modulesFilter: function (hookname) {
+      var args = arguments;
+      var result = true;
+
+      GSXmodules.forEach(function (mod) {
+        if (typeof mod[hookname] === 'function') {
+          console.debug('>Filter', hookname, mod.name);
+
+          if (!mod[hookname].apply(GSX, Array.prototype.slice.call(args, 1)))
+            result = false;
+
+          console.debug('<Filter done', mod.name);
+        }
+      });
+
+      return result;
+    },
     /*
      *
      */
@@ -178,7 +190,7 @@ var GSX = (function () {
         GSX.onUserChange(this.model.get('user'));
       }, this);
       GSX.onUserChange(this.model.get('user'));
-      GSX.modulesHook('afterGSAppInit');
+      GSX.modulesHook('afterGSAppInit', this);
       console.info('-- In da place ---');
     },
 
@@ -211,7 +223,7 @@ var GSX = (function () {
       this.settings = settings || this.settings;
       localStorage.setItem('gsx', JSON.stringify(this.settings));
     },
-    
+
     readPrefValue: function () {
       var userSettings = JSON.parse(localStorage.getItem('gsx'));
       //filter to remove deprecated/unused settings
@@ -219,7 +231,7 @@ var GSX = (function () {
       this.settings = _.extend(this.settings, userSettings);
       return this.settings;
     },
-    
+
     deletePrefValue: function () {
       localStorage.removeItem('gsx');
     },
@@ -307,16 +319,17 @@ var GSX = (function () {
 
     onBroadcastChange: function () {
       console.debug('onBroadcastChange', arguments);
+      var bc = GS.getCurrentBroadcast();
       //force loading of broadcaster's favorites.
-      if (GS.getCurrentBroadcast()) {
-        GS.getCurrentBroadcast().getOwner().getFavoritesByType('Users').then(function () {
-          GS.getCurrentBroadcast().get('chatActivities').forEach(function (c) {
+      if (bc) {
+        bc.getOwner().getFavoritesByType('Users').then(function () {
+          bc.get('chatActivities').forEach(function (c) {
             c.trigger('change');
           });
         });
 
-        GS.getCurrentBroadcast().getOwner().getLibrary().then(function () {
-          GS.getCurrentBroadcast().get('suggestions').each(function (s) {
+        bc.getOwner().getLibrary().then(function () {
+          bc.get('suggestions').each(function (s) {
             s.trigger('change:gsx'); // force views update
           });
         });
@@ -627,6 +640,10 @@ var GSX = (function () {
                 <label for="settings-gsx-songNotification">Show a desktop notification when active song changes.</label>\
             </li>\
             <li>\
+                <input id="settings-gsx-socialBar" type="checkbox">\
+                <label for="settings-gsx-socialBar">Display a social bar containing the status of the people you follow.</label>\
+            </li>\
+            <li>\
                 <input id="settings-gsx-chatNotification" type="checkbox">\
                 <label for="settings-gsx-chatNotification">Show a desktop notification when someone post a message containing one of these words (1/line, case sensitive):</label>\
                 <br /><textarea id="settings-gsx-chatNotificationTriggers" rows="5" cols="50"></textarea>\
@@ -657,6 +674,7 @@ var GSX = (function () {
       $(el.find('#settings-gsx-inlineChatImages')).prop('checked', GSX.settings.inlineChatImages);
       $(el.find('#settings-gsx-forceVoterLoading')).prop('checked', GSX.settings.forceVoterLoading);
       $(el.find('#settings-gsx-songNotification')).prop('checked', GSX.settings.songNotification);
+      $(el.find('#settings-gsx-socialBar')).prop('checked', GSX.settings.socialBar);
       $(el.find('#settings-gsx-chatNotification')).prop('checked', GSX.settings.chatNotify);
       $(el.find('#settings-gsx-disableChatMerge')).prop('checked', GSX.settings.disableChatMerge);
       $(el.find('#settings-gsx-automute')).prop('checked', GSX.settings.automute);
@@ -708,6 +726,7 @@ var GSX = (function () {
       GSX.settings.inlineChatImages = $(el.find('#settings-gsx-inlineChatImages')).prop('checked');
       GSX.settings.forceVoterLoading = $(el.find('#settings-gsx-forceVoterLoading')).prop('checked');
       GSX.settings.songNotification = $(el.find('#settings-gsx-songNotification')).prop('checked');
+      GSX.settings.socialBar = $(el.find('#settings-gsx-socialBar')).prop('checked');
       GSX.settings.chatNotify = $(el.find('#settings-gsx-chatNotification')).prop('checked');
       GSX.settings.disableChatMerge = $(el.find('#settings-gsx-disableChatMerge')).prop('checked');
       GSX.settings.automute = $(el.find('#settings-gsx-automute')).prop('checked');
@@ -726,6 +745,7 @@ var GSX = (function () {
       GSX.settings.replacements = rep;
       GSX.savePrefValue();
       GSX.updateTheme();
+      GSX.modulesHook('settingsUpdated');
       console.debug('GSX Settings saved', GSX.settings);
     }
   };
