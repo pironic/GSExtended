@@ -131,8 +131,8 @@ GSXmodules.push({
         var el = $(e.currentTarget),
           txt = el.text(),
           //rot13 the message to hide spoilers
-          msg = txt.replace(/\[(sp.*)\](.+)/ig, function (m, tag, spoil, off, str) {
-            return '[' + tag + ']' + GSXUtil.rot13(spoil);
+          msg = txt.replace(/(\[sp.*\]| )(.+)/ig, function (m, tag, spoil, off, str) {
+            return tag + GSXUtil.rot13(spoil);
           });
         el.text(msg).removeClass('spoiler-msg');
         GSXUtil.magnify(el, GSX.settings.inlineChatImages);
@@ -189,8 +189,8 @@ GSXmodules.push({
         }
         if (GSX.isSpoiler(msg)) {
           //rot13 the message to hide spoilers
-          msg = msg.replace(/\[(sp.*)\](.+)/ig, function (m, tag, spoil, off, str) {
-            return '[' + tag + '] ' + GSXUtil.rot13(spoil);
+          msg = msg.replace(/(\[sp.*\]| )(.+)/ig, function (m, tag, spoil, off, str) {
+            return tag + GSXUtil.rot13(spoil);
           });
         }
         send.call(this, msg);

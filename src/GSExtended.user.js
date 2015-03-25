@@ -405,7 +405,7 @@ var GSX = (function () {
       return hot;
     },
     isSpoiler: function (text) {
-      return text.toLowerCase().indexOf('[sp') !== -1;
+      return text.toLowerCase().indexOf('[sp') !== -1 || text.toLowerCase().indexOf(' ') !== -1;
     },
     isBotCommand: function (text) {
       var i;
